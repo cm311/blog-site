@@ -1,0 +1,48 @@
+<nav class="navbar navbar-custom navbar-expand-lg navbar-custom fixed-top">
+    <a class="navbar-brand" href="/">SITE NAME</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+
+    
+    <!-- If the user is logged shows a log out button.  If not, then a log in button is shown -->
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+
+        {% if user.is_authenticated == True %}
+        <li class="nav-item">
+            <a class="nav-link" href="/logout">Log out</a>
+        </li>
+
+        {% else %}     
+        <li class="nav-item">
+            <a class="nav-link" href="/login">Log In</a>
+        </li>
+        {% endif %}
+
+
+
+        <!-- Shows articles tagged philosophy -->
+        <li class="nav-item">
+            <a class="nav-link" href="#">Philosophy</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">Video Games</a>
+        </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="#"></a>
+      </li>
+    </ul>
+
+      <!-- displays a search bar where users can search for articles on the site -->
+      <form class="form-inline my-2 my-lg-0" id="search_bar" method="post" action="/search/" enc="multipart/form-data">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="text" name="search_query" placeholder="Search Articles" aria-label="Search">
+        <button class="btn btn-custom btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>

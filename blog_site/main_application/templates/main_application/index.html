@@ -1,0 +1,94 @@
+
+{% extends "./base.html" %}
+{% load bootstrap4 %}
+{% load custom_tags %}
+
+<!-- Index page.  If a user is authenticated greets them.  If not, prompts a login or account creation -->
+
+
+{% block content %}
+<main class="container" role="main">
+    <div class="row">
+        {% if user.is_authenticated %}
+            <h2 class="col-md-9 pb-2 mb-2 font-italic border-bottom text-center"> Latest Articles </h2>
+            <h2 id="new_post_text" class="col-md-3 pb-2 mb-2 font-italic border-bottom text-left"><a href="/new_post/">New Post</a></h2>
+        {% else %}
+            <h2 class="col-md-12 pb-3 mb-2 font-italic border-bottom text-center"> Latest Articles </h2>
+        {% endif %}
+    </div>
+
+        
+    <div id="accordion" >
+        {% for art in displayed_articles %}
+        <div class="card">
+            <div class="card-header row" id="header-{{ art.id }}">
+                <h5 class="mb-0 col-md-11">
+                    <button class="btn-custom btn-link" data-toggle="collapse" data-target="#body-{{ art.id }}" aria-expanded="true" aria-controls="body-{{ art.id }}">
+                    {{ art.article_title }}  |  {{ art.date }}
+                    </button>
+                </h5>
+
+                {% if user.is_authenticated %}
+                <button class="btn-custom mb-0 col-md-1">
+                    <a href="/edit_post/{{ art.id }}">Edit</a>
+                </button>
+                {% endif %}
+            </div>
+            
+            <!-- Article body -->
+            <div id="body-{{ art.id }}" class="collapse row show" aria-labelledby="header-{{ art.id }}" data-parent="#accordion">
+                <div class="card-body">
+                    {{art.body | linebreaks}}
+                </div>
+            </div>
+
+            <!-- Comments section -->
+            <div id="accordion-comments">
+                <div class="card-footer card row" id="footer-{{ art.id }}">
+                    <h5 class="mb-0 col-md-auto">
+                        <button class="btn-comments btn-link" data-toggle="collapse" data-target="#comments-{{ art.id }}" aria-expanded="true" aria-controls="comments-{{ art.id }}">
+                            {% for pk in comments %}
+                                {% if pk == art.id %}
+                                    {% get_comments_length comments art.id %} comments
+                                {% endif %}
+                            {% endfor %}
+                        </button>
+                    </h5>
+
+                    <div id="comments-{{ art.id }}" class="collapse" aria-labelledby="footer-{{ art.id }}" data-parent="#accordion-comments">
+                        <div class="card-body">
+                            {% for pk in comments %}
+                                {% if pk == art.id %}
+                                    {% autoescape off %}
+                                    <p> {% show_comments comments art.id %} </p>
+                                    {% endautoescape %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% if user.is_authenticated %}
+                <form data-parent="#accordion-comments" action="/post_comment/{{art.id}}" id="post-comment-{{art.id}}" method="post" class="form">
+                    {% csrf_token %}
+                    {% bootstrap_form comments_form %}
+                    <div >
+                        <input type="submit" value="save comment">
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+
+
+
+        </div>
+
+
+        {% endfor %}
+    </div>
+    
+
+
+
+</main>
+
+{% endblock %}

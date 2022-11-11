@@ -1,0 +1,17 @@
+{% extends "./base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<h2> Create New Article </h2>
+<form action="/new_post/" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type="submit" value="Submit">
+</form>
+{% else %}
+<p>User is not authenticated</p>
+{% endif %}
+
+{% endblock %}

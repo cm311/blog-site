@@ -1,0 +1,14 @@
+{% include "./header.html" %}
+{% include "./nav_bar.html" %}
+
+
+
+<!-- Base template.  Everything inherits from this -->
+
+<div class="col-12" class="content">
+    {% block content %}Didn't render content{% endblock %}
+</div>
+
+{% include "./footer.html" %}
+
+</html>
