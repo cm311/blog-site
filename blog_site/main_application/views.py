@@ -1,8 +1,10 @@
 import datetime
-from django.http import HttpResponseRedirect, HttpResponse
+from django.core import serializers
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import *
+from .serializers import *
 
 # Create your views here.
 def index(request):
@@ -82,3 +84,19 @@ def post_comment(request, id):
         return HttpResponseRedirect('/')
     else:
         return HttpResponseRedirect('/')
+
+def api_get_recent_articles(request, page_num):
+    displayed_articles = Article.objects.all().order_by('date').reverse()[(page_num-1) * 10 :page_num * 10]
+    data = {}
+    for article in displayed_articles:
+        data[article.pk] = ArticleSerializer(article).data
+
+        comments_query_set = Comment.objects.filter(article=article.pk)
+        comments = []
+        
+        for comment in comments_query_set:
+            comment = CommentSerializer(comment).data
+            comments.append(comment)
+        data[article.pk]['comments'] = comments
+
+    return JsonResponse(data)
