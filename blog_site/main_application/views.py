@@ -86,7 +86,7 @@ def post_comment(request, id):
         return HttpResponseRedirect('/')
 
 def api_get_recent_articles(request, page_num):
-    displayed_articles = Article.objects.all().order_by('date').reverse()[(page_num-1) * 10 :page_num * 10]
+    displayed_articles = Article.objects.all().order_by('date').reverse()[(page_num-1) * 5 :page_num * 5]
     data = {}
     for article in displayed_articles:
         data[article.pk] = ArticleSerializer(article).data
