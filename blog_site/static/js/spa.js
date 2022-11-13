@@ -1,8 +1,9 @@
 var page_num = 1;
 
-$(document).ready(function() {
-
-    
+function change_page(direction) {
+    page_num += direction
+    console.log('changing page to' + page_num);
+    $('#articles-main').empty();
     $.ajax({
         url: 'api/get_recent_articles/' + page_num,
         type: 'get',
@@ -10,45 +11,75 @@ $(document).ready(function() {
         },
 
         success: function(response) {
+            articles = []
             for (var key in response){
-                console.log( key, response[key] );
-                render_article(response[key], page_num);
+                articles.push(render_article(response[key]));
             }
 
-            
-
-            var newer = '<a href="#' + (page_num - 1) + '" id="newer-link">newer</a>';
-            var older = '<a href="#' + (page_num + 1) + '" id="older-link">older</a>';
-            console.log(newer);
-            document.getElementById('footer').innerHTML += newer;
-            document.getElementById('footer').innerHTML += older;
-
-            if(page_num == 1) {
-                var newer = document.getElementById('newer-link').hidden = true;
+            articles.reverse();
+            for(var i=0; i < articles.length; i++) {
+                var element = document.getElementById('articles-main');
+                element.innerHTML+= articles[i];
             }
 
-            $('#newer-link').click(function() {
-                console.log('clikced newer');
-                if(page_num == 1) {
-                    document.getElementById('newer-link').hidden = true;
-                }
-            });
-            
-            $('#older-link').click(function() {
-                console.log('clikced older');
-                page_num += 1;
-                    document.getElementById('newer-link').hidden = false;
-            });
+            if ($('#articles-main div').length < 5) {
+                $('#older-link').attr('hidden', true);
+            }
+            else {
+                $('#older-link').attr('hidden', false)
+            }
         }
+    });
 
-    })
+    if(page_num == 1) {
+        $('#newer-link').attr('hidden', true);
+    }
+    else {
+        $('#newer-link').attr('hidden', false);
+    }
+
+}   
+
+
+$(document).ready(function() {
+    if(page_num == 1) {
+        $('#newer-link').attr('hidden', true);
+    }
+
+    $.ajax({
+        url: 'api/get_recent_articles/' + page_num,
+        type: 'get',
+        data: {
+        },
+
+        success: function(response) {
+            articles = []
+            for (var key in response){
+                articles.push(render_article(response[key]));
+            }
+
+            articles.reverse();
+            for(var i=0; i < articles.length; i++) {
+                var element = document.getElementById('articles-main');
+                element.innerHTML+= articles[i];
+            }
+
+            if ($('#articles-main div').length < 5) {
+                $('#older-link').attr('hidden', true);
+            }
+        }
+    });
+
+
 });
 
 
 
+
 function render_article(article) {
-    var element = document.getElementById('articles-main');
+    //var element = document.getElementById('articles-main');
     var markup = '<div class="text"><h3 class="h4">' + article.article_title + '</h3><small class="date-posted">Posted on ' 
                 + article.date + '</small><p><br>' + article.body + '</p></div>';
-    element.innerHTML+= markup;
+    //element.innerHTML+= markup;
+    return markup
 }
