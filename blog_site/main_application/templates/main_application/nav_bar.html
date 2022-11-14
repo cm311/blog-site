@@ -1,7 +1,7 @@
 <nav class="navbar navbar-custom navbar-expand-lg navbar-custom fixed-top">
-    <a class="navbar-brand" href="/">SITE NAME</a>
+    <a class="navbar-brand" href="/">Babel</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon"><img src="https://cdn-icons-png.flaticon.com/512/56/56763.png" style="width:auto"></span>
     </button>
   
 
@@ -39,7 +39,7 @@
     </ul>
 
       <!-- displays a search bar where users can search for articles on the site -->
-      <form class="form-inline my-2 my-lg-0" id="search_bar" method="post" action="/search/" enc="multipart/form-data">
+      <form class="form-inline my-2 my-lg-0" id="search_bar" action="/search/" method="post" enc="multipart/form-data">
         {% csrf_token %}
         <input class="form-control mr-sm-2" type="text" name="search_query" placeholder="Search Articles" aria-label="Search">
         <button class="btn btn-custom btn-outline-success my-2 my-sm-0" type="submit">Search</button>

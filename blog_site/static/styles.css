@@ -31,6 +31,10 @@ a:hover {
     border-color: black;
 }
 
+.navbar-toggle .icon-bar {
+    background-color: #fff;
+}
+
 .btn-custom {
     background-color: rgb(97, 25, 25);
     border-color: rgb(90, 25, 25);
@@ -134,5 +138,9 @@ a:hover {
 
 .change-page {
     margin-right: 2%;
+}
+
+#older-link {
+    
 }
 

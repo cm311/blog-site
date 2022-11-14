@@ -1,5 +1,6 @@
 var page_num = 1;
 
+
 function change_page(direction) {
     page_num += direction
     console.log('changing page to' + page_num);
@@ -37,7 +38,6 @@ function change_page(direction) {
     else {
         $('#newer-link').attr('hidden', false);
     }
-
 }   
 
 
@@ -69,8 +69,6 @@ $(document).ready(function() {
             }
         }
     });
-
-
 });
 
 
@@ -82,4 +80,8 @@ function render_article(article) {
                 + article.date + '</small><p><br>' + article.body + '</p></div>';
     //element.innerHTML+= markup;
     return markup
+}
+
+function render_search_results(data) {
+    console.log('in this funciton at least');
 }

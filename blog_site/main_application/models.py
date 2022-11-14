@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 # Create your models here.
@@ -22,7 +24,7 @@ class Article(models.Model):
     ]
 
     article_title = models.CharField(max_length=600)
-    date = models.DateTimeField('date published')
+    date = models.DateTimeField('date published', default=datetime.datetime.now())
     tag = models.CharField(choices=tag_types, default=ARTICLE, max_length=100)
     body = models.TextField()
 

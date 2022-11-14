@@ -20,6 +20,19 @@ def index(request):
                                                             'comments_form' : comments_form,
                                                             'comments' : comments})
 
+
+def search(request):
+    search_query = request.POST['search_query']
+    displayed_articles = Article.objects.filter(article_title__contains=search_query)
+    data = {}
+    for article in displayed_articles:
+        data[article.pk] = ArticleSerializer(article).data
+
+    return render(request, 'main_application/search_results.html', {'displayed_articles' : displayed_articles,
+                                                                    })
+
+
+
 def logout_user(request):
     logout(request)
     return redirect(index)
@@ -101,3 +114,5 @@ def api_get_recent_articles(request, page_num):
         data[article.pk]['comments'] = comments
 
     return JsonResponse(data)
+
+

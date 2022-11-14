@@ -10,4 +10,5 @@ urlpatterns = [
     path('edit_post/<int:id>', views.edit_post, name="edit_post"),
     path('post_comment/<int:id>', views.post_comment, name="post_comment"),
     path('api/get_recent_articles/<int:page_num>', views.api_get_recent_articles, name="get_recent_articles"),
+    path('search/', views.search, name="search"),
 ]
